@@ -1,3 +1,6 @@
+import fs from "fs";
+const input = fs.readFileSync("./input.txt", "utf8");
+
 const a = Array.from(Array(26)).map((e, i) => i + 65);
 const alphabet = [
   ...a.map((x) => String.fromCharCode(x).toLowerCase()),
@@ -15,7 +18,6 @@ function ruckSack(str: string) {
   const rucksackSum = format
     .map((f) => divideString(f))
     .map((string) => getCommonLetter(string))
-    .map(Object.keys)
     .flat()
     .map((v) => priority.find((element) => Object.keys(element).includes(v)))
     .map((a) => Object.values(a!))
@@ -24,7 +26,6 @@ function ruckSack(str: string) {
 
   const rucksackGroupSum = chunk(format, 3)
     .map((s) => getCommonLetterFromThree(s as [string, string, string]))
-    .map(Object.keys)
     .flat()
     .map((v) => priority.find((element) => Object.keys(element).includes(v)))
     .map((a) => Object.values(a!))
@@ -46,14 +47,16 @@ function getCommonLetter(array: [string, string]) {
   const str1 = array[0];
   const str2 = array[1];
   const str2Arr = str2.split("");
+  const result = [];
   for (let string of str1) {
     let idx = str2Arr.findIndex((s) => s === string);
     if (idx >= 0) {
+      result.push(string);
       count[string] = count["string"] + 1 || 1;
       str2Arr.splice(idx, 1);
     }
   }
-  return count;
+  return Object.keys(count);
 }
 
 function chunk<T>(array: T[], by: number) {
@@ -80,5 +83,7 @@ function getCommonLetterFromThree(array: [string, string, string]) {
       str3Arr.splice(idx2, 1);
     }
   }
-  return count;
+  return Object.keys(count);
 }
+
+console.log(ruckSack(input));

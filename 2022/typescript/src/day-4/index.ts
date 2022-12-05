@@ -1,4 +1,7 @@
-function getMaxPairs(input: any) {
+import fs from "fs";
+const input = fs.readFileSync("./input.txt", "utf8");
+
+function getMaxPairs(input: string) {
   const format: number[][][] = input
     .trim()
     .split(/\r?\n/)
@@ -27,3 +30,5 @@ function getMaxPairs(input: any) {
     total: total.length,
   };
 }
+
+console.log(getMaxPairs(input));
